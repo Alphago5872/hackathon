@@ -1,9 +1,17 @@
 import mongoose from "mongoose";
 
+const allowedTypes = ['scholarship', 'extracurricular', 'internship', 'summer program'];
+
 export const ItemSchema = new mongoose.Schema({
-    ItemType: {
+    type: {
         type: String,
         required : [true, "Please provide correct Item Type"],
+        validate: {
+            validator: function(value) {
+                return allowedTypes.includes(value.toLowerCase());
+            },
+            message: 'Please provide a valid Item Type: Scholarship, Extracurricular, Internship, or Summer Program'
+        },
     },
     name : {
         type: String,
@@ -22,4 +30,4 @@ export const ItemSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.model.Item || mongoose.model('User', ItemSchema);
+export default mongoose.model.Item || mongoose.model('Item', ItemSchema);

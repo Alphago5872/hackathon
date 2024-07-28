@@ -1,4 +1,5 @@
 import UserModel from '../model/User.model.js'
+import ItemModel from '../model/Item.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js'
@@ -154,6 +155,38 @@ export async function login(req, res) {
 
     } catch (error) {
         return res.status(500).send({ error });
+    }
+}
+
+/** POST: http://localhost:8080/api/createItem 
+ * @param : {
+  "ItemType" : "exampleType",
+  "name" : "exampleName",
+  "industry": ["exampleIndustry"],
+  "description" : "exampleDescription",
+  "image": "exampleImageURL"
+}
+*/
+export async function createItem(req, res) {
+    try {
+        const { type, name, industry, description, image } = req.body;
+
+        // Create a new item instance
+        const item = new ItemModel({
+            type,
+            name,
+            industry,
+            description,
+            image: image || ''
+        });
+
+        // Save the item to the database
+        item.save()
+            .then(result => res.status(201).send({ msg: "Item Created Successfully", item: result }))
+            .catch(error => res.status(500).send({ error }));
+
+    } catch (error) {
+        return res.status(500).send(error);
     }
 }
 

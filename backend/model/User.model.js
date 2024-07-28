@@ -23,15 +23,12 @@ export const UserSchema = new mongoose.Schema({
     },
     line: {
         type: String,
-        required: true
     },
     discord: {
         type: String,
-        required: true
     },
     mobile: {
         type: Number,
-        required: true
     },
     interested_topics: {type: [String]},
     address: { type: String },

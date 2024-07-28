@@ -13,6 +13,7 @@ router.route('/register').post(controller.register); // register User
 router.route('/registerMail').post(registerMail); // send the email
 router.route('/authenticate').post(controller.verifyUser, (req, res) => res.end()); // authenticate User
 router.route('/login').post(controller.verifyUser,controller.login); // login in app
+router.route('/createitem').post(controller.createItem); 
 
 /** GET Methods */
 router.route('/:username').get(controller.getUser) // get user information
