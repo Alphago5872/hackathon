@@ -1,8 +1,30 @@
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import FeedsPage from "./pages/FeedsPage";
+import Root from "./pages/Root";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        path: "/:page",
+        element: <FeedsPage />,
+      }
+    ],
+    // errorElement: <Root />,
+  },
+]);
+
 function App() {
   return (
-    <div className="App">
-      <p>Hello world</p>
-    </div>
+    // <div className="">
+    //   <p>Hello world</p>
+    // </div>
+    <RouterProvider router={router} />
   );
 }
 
