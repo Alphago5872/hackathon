@@ -2,6 +2,16 @@ import mongoose from "mongoose";
 
 const allowedTypes = ['scholarship', 'extracurricular', 'internship', 'summer program'];
 
+function isValidDate(value) {
+    const regex = /^\d{2}-\d{2}-\d{4}$/;
+    if (!regex.test(value)) {
+        return false;
+    }
+    const [day, month, year] = value.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+}
+
 export const ItemSchema = new mongoose.Schema({
     type: {
         type: String,
@@ -27,6 +37,20 @@ export const ItemSchema = new mongoose.Schema({
     },
     image : {
         type : String,
+    },
+    link : {
+        type : String,
+    },
+    deadline: {
+        type: String,
+        validate: {
+            validator: isValidDate,
+            message: 'Please provide a valid date in the format dd-mm-yyyy'
+        }
+    },
+    organization : {
+        type: String,
+        required : [true, "Please provide the organization hosting the item"]
     }
 });
 

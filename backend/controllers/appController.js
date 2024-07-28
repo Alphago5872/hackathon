@@ -169,7 +169,7 @@ export async function login(req, res) {
 */
 export async function createItem(req, res) {
     try {
-        const { type, name, industry, description, image } = req.body;
+        const { type, name, industry, description, image, link, deadline } = req.body;
 
         // Create a new item instance
         const item = new ItemModel({
@@ -177,7 +177,10 @@ export async function createItem(req, res) {
             name,
             industry,
             description,
-            image: image || ''
+            image: image || '',
+            link,
+            deadline,
+            organization
         });
 
         // Save the item to the database
