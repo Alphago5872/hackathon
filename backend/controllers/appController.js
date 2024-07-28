@@ -169,7 +169,7 @@ export async function login(req, res) {
 */
 export async function createItem(req, res) {
     try {
-        const { type, name, industry, description, image, link, deadline } = req.body;
+        const { type, name, industry, description, image, link, status, opening, deadline } = req.body;
 
         // Create a new item instance
         const item = new ItemModel({
@@ -179,6 +179,8 @@ export async function createItem(req, res) {
             description,
             image: image || '',
             link,
+            status,
+            opening,
             deadline,
             organization
         });

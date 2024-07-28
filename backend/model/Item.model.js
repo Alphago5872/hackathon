@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const allowedTypes = ['scholarship', 'extracurricular', 'internship', 'summer program'];
+const allowedStatus = ['open', 'closed'];
 
 function isValidDate(value) {
     const regex = /^\d{2}-\d{2}-\d{4}$/;
@@ -40,6 +41,23 @@ export const ItemSchema = new mongoose.Schema({
     },
     link : {
         type : String,
+    },
+    status: {
+        type : String,
+        required : [true, "Please provide correct Item Type"],
+        validate: {
+            validator: function(value) {
+                return allowedStatus.includes(value.toLowerCase());
+            },
+            message: 'Please provide a valid Item Type: Scholarship, Extracurricular, Internship, or Summer Program'
+        },
+    },
+    opening: {
+        type: String,
+        validate: {
+            validator: isValidDate,
+            message: 'Please provide a valid date in the format dd-mm-yyyy'
+        }
     },
     deadline: {
         type: String,
