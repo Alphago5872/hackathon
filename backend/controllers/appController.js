@@ -167,6 +167,8 @@ export async function login(req, res) {
   "image": "exampleImageURL"
 }
 */
+
+
 export async function createItem(req, res) {
     try {
         const { type, name, industry, description, image, link, status, opening, deadline } = req.body;
@@ -194,6 +196,40 @@ export async function createItem(req, res) {
         return res.status(500).send(error);
     }
 }
+
+
+
+/** GET: http://localhost:8080/api/getItem
+ * @param : {
+  "type" : "exampleType"
+ }
+ */
+
+export async function getItem(req, res) {
+    try {
+        const { type, name, industry, status, organization } = req.query;
+
+        // Build the query object
+        let query = {};
+        if (type) query.type = type;
+        if (name) query.name = name;
+        if (industry) query.industry = industry;
+        if (status) query.status = status;
+        if (organization) query.organization = organization;
+
+        // Retrieve items from the database
+        let items = await ItemModel.find(query);
+
+        if (!items.length) return res.status(404).send({ error: "No items found" });
+
+        return res.status(200).send(items);
+
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+}
+
+
 
 
 /** GET: http://localhost:8080/api/example123 */
