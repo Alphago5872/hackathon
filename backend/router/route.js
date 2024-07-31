@@ -16,11 +16,13 @@ router.route('/login').post(controller.verifyUser,controller.login); // login in
 router.route('/createitem').post(controller.createItem); //create Item
 
 /** GET Methods */
-router.route('/:username').get(controller.getUser); // get user information
 router.route('/generateOTP').get(controller.verifyUser, localVariables, controller.generateOTP); // generate random OTP
 router.route('/verifyOTP').get(controller.verifyUser, controller.verifyOTP); // verify generated OTP
 router.route('/createResetSession').get(controller.createResetSession); // reset all the variables
-router.route('/getItem').get(controller.getItem); // get item information
+router.route('/getitem').get(controller.getItem); // get item information
+router.route('/:username').get(controller.getUser); // get user information
+
+
 
 
 /** PUT Methods */

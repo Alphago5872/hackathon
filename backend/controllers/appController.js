@@ -199,7 +199,7 @@ export async function createItem(req, res) {
 
 
 
-/** GET: http://localhost:8080/api/getItem
+/** GET: http://localhost:8080/api/getitem
  * @param : {
   "type" : "exampleType"
  }
