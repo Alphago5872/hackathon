@@ -22,13 +22,8 @@ router.route('/createResetSession').get(controller.createResetSession); // reset
 router.route('/getitem').get(controller.getItem); // get item information
 router.route('/:username').get(controller.getUser); // get user information
 
-
-
-
 /** PUT Methods */
-router.route('/updatuser').put(Auth, controller.updateUser); // is use to update the User profile
+router.route('/updateuser').put(Auth, controller.updateUser); // is use to update the User profile
 router.route('/resetPassword').put(controller.verifyUser, controller.resetPassword); // use to reset password
-
-
 
 export default router;
