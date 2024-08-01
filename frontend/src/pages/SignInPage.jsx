@@ -1,6 +1,35 @@
 import { Link } from "react-router-dom";
+import apiPrivateClient, { apiPublicClient } from "../utils/axios";
+import { useState } from "react";
 
 const SignInPage = () => {
+  const axios = apiPublicClient;
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+
+    if (!username || !password) {
+      alert("Please fill in the form");
+      return;
+    }
+
+    try {
+      const response = await axios.post("/api/login", {
+        username,
+        password,
+      }).then(res => res.data).catch(err => console.log(err));
+
+      localStorage.setItem("jwt", response.token);
+      console.log(response);
+    } catch (error) {
+      console.log("Error signing in");
+
+      console.log(error.data);
+    }
+  }
+
   return (
     <div className="grid w-screen h-screen grid-cols-2">
       <div>
@@ -15,7 +44,7 @@ const SignInPage = () => {
           Sign in to continue
         </p>
         <div>
-          <form className="mt-8">
+          <form className="mt-8" onSubmit={handleSignIn}>
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2" for="username">
                 Username
@@ -25,6 +54,7 @@ const SignInPage = () => {
                 id="username"
                 type="text"
                 placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="mb-6">
@@ -36,21 +66,22 @@ const SignInPage = () => {
                 id="password"
                 type="password"
                 placeholder="******************"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="flex items-center justify-between">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
+                type="submit"
               >
                 Sign In
               </button>
-              <a
+              {/* <a
                 className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
                 href="#"
               >
                 Forgot Password?
-              </a>
+              </a> */}
             </div>
           </form>
           <p className="text-center text-gray-600 mt-4">
