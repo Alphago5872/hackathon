@@ -1,6 +1,38 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { apiPublicClient } from "../utils/axios";
 
 const SignUpPage = () => {
+  const axios = apiPublicClient;
+
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
+  const signUpHandler = async (e) => {
+    e.preventDefault();
+
+    if (!userName || !password || !email) {
+      alert("Please fill in the form");
+      return;
+    }
+
+    try {
+      const response = await axios.post("/api/register", {
+        username: userName,
+        password,
+        email,
+      }).then(res => res.data);
+
+      console.log("Signed up successfully");
+      console.log(response)
+    } catch (error) {
+      console.log("Error signing up");
+
+      console.log(error);
+    }
+  }
+
   return (
     <div className="grid w-screen h-screen grid-cols-2">
       <div>
@@ -15,7 +47,7 @@ const SignUpPage = () => {
           Sign in to continue
         </p>
         <div>
-            <form className="mt-8">
+            <form className="mt-8" onSubmit={signUpHandler}>
                 <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2" for="username">
                     Username
@@ -25,6 +57,7 @@ const SignUpPage = () => {
                     id="username"
                     type="text"
                     placeholder="Username"
+                    onChange={(e) => setUserName(e.target.value)}
                 />
                 </div>
                 <div className="mb-4">
@@ -36,6 +69,7 @@ const SignUpPage = () => {
                     id="email"
                     type="email"
                     placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
                 />
                 </div>
                 <div className="mb-6">
@@ -47,12 +81,13 @@ const SignUpPage = () => {
                     id="password"
                     type="password"
                     placeholder="******************"
+                    onChange={(e) => setPassword(e.target.value)}
                 />
                 </div>
                 <div className="flex items-center justify-between">
                 <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
+                    type="submit"
                 >
                     Sign Up
                 </button>
