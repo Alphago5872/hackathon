@@ -8,7 +8,11 @@ const app = express();
 
 /** middlewares */
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(morgan('tiny'));
 app.disable('x-powered-by'); // less hackers know about our stack
 
@@ -36,4 +40,3 @@ connect().then(() => {
 }).catch(error => {
     console.log("Invalid database connection...!");
 })
-
