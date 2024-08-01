@@ -52,30 +52,26 @@ export async function checkone(req, res, next) {
 }
 */
 export async function register(req, res) {
-
     try {
         const { username, password, profile, email } = req.body;
 
-        // check the existing user
+        // Check for existing username
         const existUsername = new Promise((resolve, reject) => {
             UserModel.findOne({ username }, function (err, user) {
-                if (err) reject(new Error(err))
+                if (err) reject(new Error(err));
                 if (user) reject({ error: "Please use unique username" });
-
                 resolve();
-            })
+            });
         });
 
-        // check for existing email
+        // Check for existing email
         const existEmail = new Promise((resolve, reject) => {
             UserModel.findOne({ email }, function (err, email) {
-                if (err) reject(new Error(err))
+                if (err) reject(new Error(err));
                 if (email) reject({ error: "Please use unique Email" });
-
                 resolve();
-            })
+            });
         });
-
 
         Promise.all([existUsername, existEmail])
             .then(() => {
@@ -90,26 +86,43 @@ export async function register(req, res) {
                                 email
                             });
 
-                            // return save result as a response
+                            // Save the user to the database
                             user.save()
-                                .then(result => res.status(201).send({ msg: "User Register Successfully" }))
-                                .catch(error => res.status(500).send({ error }))
+                                .then(result => {
+                                    // Generate JWT token
+                                    const token = jwt.sign(
+                                        {
+                                            userId: result._id,
+                                            username: result.username
+                                        },
+                                        ENV.JWT_SECRET,
+                                        { expiresIn: "24h" }
+                                    );
 
-                        }).catch(error => {
-                            return res.status(500).send({
-                                error: "Enable to hashed password"
-                            })
+                                    // Return success response with token
+                                    res.status(201).send({
+                                        msg: "User registered successfully",
+                                        token: token
+                                    });
+                                })
+                                .catch(error => res.status(500).send({ error: "Error saving user" }));
                         })
+                        .catch(error => {
+                            return res.status(500).send({
+                                error: "Unable to hash password"
+                            });
+                        });
+                } else {
+                    return res.status(400).send({ error: "Password is required" });
                 }
-            }).catch(error => {
-                return res.status(500).send({ error })
             })
-
+            .catch(error => {
+                return res.status(400).send({ error });
+            });
 
     } catch (error) {
-        return res.status(500).send(error);
+        return res.status(500).send({ error: "Internal Server Error" });
     }
-
 }
 
 
