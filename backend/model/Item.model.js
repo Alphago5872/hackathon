@@ -44,12 +44,11 @@ export const ItemSchema = new mongoose.Schema({
     },
     status: {
         type : String,
-        required : [true, "Please provide correct Item Type"],
         validate: {
             validator: function(value) {
                 return allowedStatus.includes(value.toLowerCase());
             },
-            message: 'Please provide a valid Item Type: Scholarship, Extracurricular, Internship, or Summer Program'
+            message: 'open or closed'
         },
     },
     opening: {

@@ -158,20 +158,31 @@ export async function login(req, res) {
     }
 }
 
-/** POST: http://localhost:8080/api/createItem 
- * @param : {
-  "ItemType" : "exampleType",
-  "name" : "exampleName",
-  "industry": ["exampleIndustry"],
-  "description" : "exampleDescription",
-  "image": "exampleImageURL"
-}
-*/
 
 
+/**
+ * POST: http://localhost:8080/api/createitem
+ * @param: {
+ *   "type": "Internship",
+ *   "name": "High School Student Stanford Summer Internship",
+ *   "industry": ["Medicine"],
+ *   "description": "Description of the internship...",
+ *   "image": "",
+ *   "link": "https://example.com",
+ *   "status": "closed",
+ *   "opening": "01-04-2024",
+ *   "deadline": "01-05-2024",
+ *   "organization": "Stanford CSSEC"
+ * }
+ */
 export async function createItem(req, res) {
     try {
-        const { type, name, industry, description, image, link, status, opening, deadline } = req.body;
+        const { type, name, industry, description, image, link, status, opening, deadline, organization } = req.body;
+
+        // Validate required fields
+        if (!type || !name || !industry || !description || !link || !status || !opening || !deadline || !organization) {
+            return res.status(400).send({ error: "All fields are required" });
+        }
 
         // Create a new item instance
         const item = new ItemModel({
@@ -188,12 +199,15 @@ export async function createItem(req, res) {
         });
 
         // Save the item to the database
-        item.save()
-            .then(result => res.status(201).send({ msg: "Item Created Successfully", item: result }))
-            .catch(error => res.status(500).send({ error }));
+        const savedItem = await item.save();
+        return res.status(201).send({ msg: "Item Created Successfully", item: savedItem });
 
     } catch (error) {
-        return res.status(500).send(error);
+        // Handle any errors that occur during the item creation
+        if (error.name === 'ValidationError') {
+            return res.status(400).send({ error: error.message });
+        }
+        return res.status(500).send({ error: "Internal Server Error" });
     }
 }
 
