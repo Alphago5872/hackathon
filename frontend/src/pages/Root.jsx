@@ -9,7 +9,6 @@ const Root = () => {
         <SideBar />
       </div>
       <div className="flex-grow-3 w-full mt-14">
-
         <Outlet />
       </div>
       <div className="flex-grow-1 max-w-96 w-full mx-4 mt-14 px-4">
