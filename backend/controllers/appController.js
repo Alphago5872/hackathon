@@ -95,9 +95,7 @@ export async function register(req, res) {
                                             userId: result._id,
                                             username: result.username
                                         },
-                                        ENV.JWT_SECRET,
-                                        { expiresIn: "24h" }
-                                    );
+                                        ENV.JWT_SECRET);
 
                                     // Return success response with token
                                     res.status(201).send({
@@ -149,7 +147,7 @@ export async function login(req, res) {
                         const token = jwt.sign({
                             userId: user._id,
                             username: user.username
-                        }, ENV.JWT_SECRET, { expiresIn: "24h" });
+                        }, ENV.JWT_SECRET);
 
                         return res.status(200).send({
                             msg: "Login Successful...!",
