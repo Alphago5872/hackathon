@@ -12,17 +12,25 @@ import DUMMY_USER_PROFILE from "../assets/DUMMY User profile.png";
 // import SummerProgram_white_icon from '../assets/icon/summer white.png';
 // import Share_black_icon from '../assets/icon/share black.png';
 // import Share_white_icon from '../assets/icon/share white.png';
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const SideBar = () => {
   const [page, setPage] = useState("home");
+  const [loggedIn, setLoggedIn] = useState(false);
   const redirect = useNavigate();
+  const jwt = localStorage.getItem("jwt");
 
   const params = useParams();
 
   useEffect(() => {
+    // Handle page change
     if (params.page) {
       setPage(params.page);
+    }
+
+    // Handle login state
+    if (jwt) {
+      setLoggedIn(true);
     }
   }, []);
 
@@ -40,13 +48,26 @@ const SideBar = () => {
   return (
     <div className="w-full h-fit sticky top-14">
       <div className="mx-auto w-fit">
-        <img
-          className="w-32 mx-auto"
-          src={DUMMY_USER_PROFILE}
-          alt="User profile"
-        />
-        <h1 className="text-4xl font-bold text-center">John Doe</h1>
-        <p className="text-gray-600 font-medium text-center">@Johndoe123</p>
+        {loggedIn ? (
+          <>
+            <img
+              className="w-32 mx-auto"
+              src={DUMMY_USER_PROFILE}
+              alt="User profile"
+            />
+            <h1 className="text-4xl font-bold text-center">John Doe</h1>
+            <p className="text-gray-600 font-medium text-center">@Johndoe123</p>
+          </>
+        ) : (
+          <div className="mx-8 p-2 rounded-xl bg-gray-100 flex flex-col">
+            <h1 className="text-3xl font-bold text-center">
+              Don't have an account?
+            </h1>
+            <Link to="/signup" className="text-center text-blue-500 ">
+              Sign up now!
+            </Link>
+          </div>
+        )}
       </div>
       <div className="mx-auto w-fit h-auto mt-10 relative [&>*]:hover:cursor-pointer">
         <div
@@ -125,8 +146,12 @@ const SideBar = () => {
           </h2>
         </div>
         <div
-          className={`flex w-64 gap-4 items-center p-1 px-4 rounded-lg`}
-          onClick={() => stateChangeHandler("share")}
+          className={`flex w-64 gap-4 items-center p-1 px-4 rounded-lg ${
+            !loggedIn && "opacity-30"
+          }`}
+          onClick={() => {
+            if (loggedIn) stateChangeHandler("share");
+          }}
         >
           {/* <img className='w-12' src={page === 'share' ? Share_white_icon : Share_black_icon} alt='share with others' /> */}
           <box-icon
