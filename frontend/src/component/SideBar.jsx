@@ -13,25 +13,45 @@ import DUMMY_USER_PROFILE from "../assets/DUMMY User profile.png";
 // import Share_black_icon from '../assets/icon/share black.png';
 // import Share_white_icon from '../assets/icon/share white.png';
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { apiPublicClient } from "../utils/axios";
 
 const SideBar = () => {
   const [page, setPage] = useState("home");
   const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
   const redirect = useNavigate();
   const jwt = localStorage.getItem("jwt");
 
   const params = useParams();
 
   useEffect(() => {
-    // Handle page change
-    if (params.page) {
-      setPage(params.page);
+    const escapeFunc = async () => {
+      // Handle page change
+      if (params.page) {
+        setPage(params.page);
+      }
+  
+      // Handle login state
+      if (jwt) {
+        setLoggedIn(true);
+      }
+  
+      const userName = localStorage.getItem("username");
+  
+      setUser({
+        ...user,
+        userName
+      })
+
+      // // Get all of the user's info
+      // if (userName) {
+      //   const response = await apiPublicClient.get(`/api/${userName}`).then((res) => res.data);
+
+      //   console.log(response);
+      // }
     }
 
-    // Handle login state
-    if (jwt) {
-      setLoggedIn(true);
-    }
+    escapeFunc();
   }, []);
 
   const stateChangeHandler = (newPage) => {
@@ -45,8 +65,13 @@ const SideBar = () => {
     redirect(`/${newPage}`);
   };
 
+  const logoutHandler = () => {
+    localStorage.removeItem("jwt");
+    setLoggedIn(false);
+  };
+
   return (
-    <div className="w-full h-[calc(100vh-56px)] sticky top-14">
+    <div className="w-full h-[calc(100vh-56px)] sticky top-14 flex flex-col ">
       <div className="mx-auto w-fit">
         {loggedIn ? (
           <>
@@ -55,8 +80,8 @@ const SideBar = () => {
               src={DUMMY_USER_PROFILE}
               alt="User profile"
             />
-            <h1 className="text-4xl font-bold text-center">John Doe</h1>
-            <p className="text-gray-600 font-medium text-center">@Johndoe123</p>
+            <h1 className="text-4xl font-bold text-center">@{user.userName}</h1>
+            {/* <p className="text-gray-600 font-medium text-center">@Johndoe123</p> */}
           </>
         ) : (
           <div className="mx-8 p-2 rounded-xl bg-gray-100 flex flex-col">
@@ -69,7 +94,7 @@ const SideBar = () => {
           </div>
         )}
       </div>
-      <div className="mx-auto w-fit h-auto mt-10 relative [&>*]:hover:cursor-pointer">
+      <div className="mx-auto w-fit h-auto mt-10 [&>*]:hover:cursor-pointer">
         <div
           className={`flex w-64 gap-4 items-center p-1 px-4 rounded-lg`}
           onClick={() => stateChangeHandler("scholarship")}
@@ -169,8 +194,10 @@ const SideBar = () => {
           </h2>
         </div>
       </div>
-      <div className="">
-        <button className="mt-auto mx-auto w-40 py-4">Log out</button>
+      <div className="mt-auto mb-14 mx-12 flex">
+        {/* <p>Nice!</p> */}
+        <Link onClick={logoutHandler} className="p-4 bg-red-500 w-full rounded-2xl text-white text-center font-bold text-xl" to="/">Log out</Link>
+        {/* <button className="mt-auto mx-auto w-full py-4">Log out</button> */}
       </div>
     </div>
   );
