@@ -1,14 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import apiPrivateClient, { apiPublicClient } from "../utils/axios";
 import { useState } from "react";
 
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
 const SignInPage = () => {
   const axios = apiPublicClient;
+  const nav = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+
+    if (disabled) return;
 
     if (!username || !password) {
       alert("Please fill in the form");
@@ -19,14 +27,28 @@ const SignInPage = () => {
       const response = await axios.post("/api/login", {
         username,
         password,
-      }).then(res => res.data).catch(err => console.log(err));
+      }).then(res => res.data);
 
       localStorage.setItem("jwt", response.token);
-      console.log(response);
-    } catch (error) {
-      console.log("Error signing in");
+      // console.log(response);
 
-      console.log(error.data);
+      toast.success("Signed up successfully", {
+        position: "top-center",
+        autoClose: 1000,
+        pauseOnHover: false,
+        onClose: () => nav("/")
+      });
+
+      setDisabled(false)
+    } catch (error) {
+      // console.log("Error signing in");
+
+      toast.error(error.response.data.error.error, {
+        position: "top-center",
+        autoClose: 1000,
+        pauseOnHover: false,
+        onClose: () => setDisabled(false)
+      });
     }
   }
 
@@ -91,6 +113,7 @@ const SignInPage = () => {
             </Link>
           </p>
         </div>
+        <ToastContainer autoClose={1000} limit={1} />
       </div>
     </div>
   );

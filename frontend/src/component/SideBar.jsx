@@ -46,7 +46,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="w-full h-fit sticky top-14">
+    <div className="w-full h-[calc(100vh-56px)] sticky top-14">
       <div className="mx-auto w-fit">
         {loggedIn ? (
           <>
@@ -168,6 +168,9 @@ const SideBar = () => {
             Share
           </h2>
         </div>
+      </div>
+      <div className="">
+        <button className="mt-auto mx-auto w-40 py-4">Log out</button>
       </div>
     </div>
   );
