@@ -4,6 +4,15 @@ import { toast, ToastContainer } from "react-toastify";
 import { apiPublicClient } from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 
+function getCurrentDate() {
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0'); // Ensure two-digit day
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const year = today.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
+
 const PostPage = () => {
   const [image, setImaga] = useState("");
   const [text, setText] = useState("");
@@ -74,7 +83,8 @@ const PostPage = () => {
           description: text,
           image: image,
           author: userName,
-          status: "closed",
+          status: status,
+          post_date: getCurrentDate(),
         })
         .then((res) => res.data);
 
