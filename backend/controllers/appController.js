@@ -220,9 +220,9 @@ export async function createItem(req, res) {
         const { type, name, industry, description, image, link, status, opening, deadline, organization, post_date, author } = req.body;
 
         // Validate required fields
-        // if (!type || !name || !description || !status || !post_date || !author) {
-        //     return res.status(400).send({ error: "All fields are required" });
-        // }
+        if (!type || !name || !description || !status || !post_date || !author) {
+            return res.status(400).send({ error: "All fields are required" });
+        }
 
         // Create a new item instance
         const item = new ItemModel({
