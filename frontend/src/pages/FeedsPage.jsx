@@ -1,86 +1,87 @@
 import { useParams } from "react-router-dom";
 import PostBox from "../component/PostBox";
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
+import { apiPublicClient } from "../utils/axios";
 
-const DUMMY_DATA = [
-  {
-    author: "Ligma",
-    userImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
-    type: "scholarship",
-    date: "2 Hours Ago",
-    content:
-      "Found an interesting competition, here is the link: www.example.com",
-    status: "Open",
-    id: 1,
-  },
-  {
-    author: "Ligma",
-    userImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
-    type: "internship",
-    date: "2 Hours Ago",
-    content:
-      "Found an interesting internship, here is the link: www.example2.com",
-    status: "Closed",
-    id: 2,
-  },
-  {
-    author: "Ligma",
-    userImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
-    type: "summer",
-    date: "2 Hours Ago",
-    content:
-      "Found an interesting competition, here is the link: www.example.com",
-    status: "Open",
-    id: 3,
-  },
-  {
-    author: "Ligma",
-    userImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
-    type: "extracurricular",
-    date: "2 Hours Ago",
-    content:
-      "Found an interesting competition, here is the link: www.example.com",
-    status: "Open",
-    id: 4,
-  },
-  {
-    author: "Ligma",
-    userImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
-    type: "misc",
-    date: "2 Hours Ago",
-    content:
-      "Found an interesting competition, here is the link: www.example.com",
-    status: "Open",
-    id: 5,
-  },
-  {
-    author: "Ligma",
-    userImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
-    type: "scholarship",
-    date: "2 Hours Ago",
-    content:
-      "Found an interesting competition, here is the link: www.example.com",
-    status: "Open",
-    id: 6,
-  },
-  {
-    author: "Ligma",
-    userImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
-    type: "scholarship",
-    date: "2 Hours Ago",
-    content:
-      "Found an interesting competition, here is the link: www.example.com",
-    status: "Open",
-    id: 7,
-  },
-];
+// const DUMMY_DATA = [
+//   {
+//     author: "Ligma",
+//     userImage:
+//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
+//     type: "scholarship",
+//     date: "2 Hours Ago",
+//     content:
+//       "Found an interesting competition, here is the link: www.example.com",
+//     status: "Open",
+//     id: 1,
+//   },
+//   {
+//     author: "Ligma",
+//     userImage:
+//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
+//     type: "internship",
+//     date: "2 Hours Ago",
+//     content:
+//       "Found an interesting internship, here is the link: www.example2.com",
+//     status: "Closed",
+//     id: 2,
+//   },
+//   {
+//     author: "Ligma",
+//     userImage:
+//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
+//     type: "summer",
+//     date: "2 Hours Ago",
+//     content:
+//       "Found an interesting competition, here is the link: www.example.com",
+//     status: "Open",
+//     id: 3,
+//   },
+//   {
+//     author: "Ligma",
+//     userImage:
+//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
+//     type: "extracurricular",
+//     date: "2 Hours Ago",
+//     content:
+//       "Found an interesting competition, here is the link: www.example.com",
+//     status: "Open",
+//     id: 4,
+//   },
+//   {
+//     author: "Ligma",
+//     userImage:
+//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
+//     type: "misc",
+//     date: "2 Hours Ago",
+//     content:
+//       "Found an interesting competition, here is the link: www.example.com",
+//     status: "Open",
+//     id: 5,
+//   },
+//   {
+//     author: "Ligma",
+//     userImage:
+//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
+//     type: "scholarship",
+//     date: "2 Hours Ago",
+//     content:
+//       "Found an interesting competition, here is the link: www.example.com",
+//     status: "Open",
+//     id: 6,
+//   },
+//   {
+//     author: "Ligma",
+//     userImage:
+//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s",
+//     type: "scholarship",
+//     date: "2 Hours Ago",
+//     content:
+//       "Found an interesting competition, here is the link: www.example.com",
+//     status: "Open",
+//     id: 7,
+//   },
+// ];
 
 const filterReducer = (state, action) => {
   if (action.type === "KEYWORDS") {
@@ -113,6 +114,7 @@ const filterReducer = (state, action) => {
 const HomePage = () => {
   const params = useParams();
   const [filterState, dispatch] = useReducer(filterReducer, { keywords: "", openFilter: false, status: "" });
+  const [data, setData] = useState([]);
 
   const filterContent = (content) => {
     let condition = true;
@@ -131,6 +133,20 @@ const HomePage = () => {
 
     return condition;
   };
+
+  useEffect(() => {
+    const escapeFunc = async () => {
+      try {
+        const response = await apiPublicClient.get("/api/getitem").then((res) => res.data);
+
+        console.log(response)
+      } catch (error) {
+        console.log("Error getting data");
+      }
+    }
+
+    escapeFunc();
+  }, []);
 
   return (
     <div className="h-full">
@@ -163,11 +179,11 @@ const HomePage = () => {
         )}
       </div>
       <div className="mt-4 [&>*]:mt-2">
-        {DUMMY_DATA.filter(filterContent).map((d) => (
+        {data.filter(filterContent).map((d) => (
           <PostBox
             key={d.id}
             author={d.author}
-            userImage={d.userImage}
+            userImage={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s'}
             type={d.type}
             date={d.date}
             content={d.content}
