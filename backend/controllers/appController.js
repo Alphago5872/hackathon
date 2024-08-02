@@ -217,7 +217,7 @@ export async function alphasrequestforgetuser(req, res) {
  */
 export async function createItem(req, res) {
     try {
-        const { type, name, industry, description, image, link, status, opening, deadline, organization, post_date, author } = req.body;
+        const { type, name, industry, description, link, status, opening, deadline, organization, post_date, author } = req.body;
 
         // Validate required fields
         if (!type || !description || !status || !post_date || !author) {
@@ -230,7 +230,6 @@ export async function createItem(req, res) {
             name,
             industry,
             description,
-            image: image || '',
             link,
             status,
             opening,

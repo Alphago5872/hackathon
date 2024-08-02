@@ -1,7 +1,7 @@
 const PostBox = (props) => {
   let color = "";
 
-  console.log(props.type)
+  console.log(props.type);
 
   if (props.type === "scholarship") {
     color = "bg-bright-yellow";
@@ -24,13 +24,22 @@ const PostBox = (props) => {
           <img className="rounded-full w-12" src={props.userImage} />
           <div className="h-full ml-2 relative">
             <h1 className="font-bold h-fit">{props.author}</h1>
-            <p className="font-medium text-sm text-gray-600 self-end relative bottom-0">{props.date}</p>
+            <p className="font-medium text-sm text-gray-600 self-end relative bottom-0">
+              {props.date}
+            </p>
           </div>
         </div>
         <h1>{props.status}</h1>
       </div>
       <div className="mt-4">
-      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" className="font-semibold text-2xl">TITTIES, I MEAN TITLE</a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={props.link}
+          className="font-semibold text-2xl"
+        >
+          {props.name}
+        </a>
       </div>
       <div className="mt-4">
         <p>{props.content}</p>

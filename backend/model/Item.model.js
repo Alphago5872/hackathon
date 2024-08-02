@@ -34,9 +34,6 @@ export const ItemSchema = new mongoose.Schema({
         type: String,
         required : [true, "Please provide a description for the item"]
     },
-    image : {
-        type : String,
-    },
     link : {
         type : String,
     },

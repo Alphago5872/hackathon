@@ -180,7 +180,6 @@ const HomePage = () => {
   }, []);
 
   console.log(data)
-  console.log(data.length)
 
   return (
     <div className="h-full">
@@ -247,6 +246,8 @@ const HomePage = () => {
             content={d.description}
             status={d.status}
             imageContent={d.image}
+            name={d.name}
+            link={d.link}
           />
         ))}
       </div>

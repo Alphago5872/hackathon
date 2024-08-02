@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 function getCurrentDate() {
   const today = new Date();
-  const day = String(today.getDate()).padStart(2, '0'); // Ensure two-digit day
-  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const day = String(today.getDate()).padStart(2, "0"); // Ensure two-digit day
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
   const year = today.getFullYear();
 
   return `${day}-${month}-${year}`;
@@ -19,6 +19,9 @@ const PostPage = () => {
   const [disabled, setDisabled] = useState(false);
   const [page, setPage] = useState("");
   const [status, setStatus] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [link, setLink] = useState("");
+  const [name, setName] = useState("");
 
   const nav = useNavigate();
 
@@ -59,9 +62,11 @@ const PostPage = () => {
   const postHandler = async (e) => {
     e.preventDefault();
 
+    console.log(link)
+
     setDisabled(true);
 
-    if (!text || page === "") {
+    if (!text || page === "" || name === "") {
       toast.error("Please enter some message", {
         position: "top-center",
         autoClose: 1000,
@@ -85,7 +90,8 @@ const PostPage = () => {
           author: userName,
           status: status,
           post_date: getCurrentDate(),
-          name: page,
+          name: name,
+          link: link,
         })
         .then((res) => res.data);
 
@@ -112,16 +118,42 @@ const PostPage = () => {
   };
 
   const stateChangeHandler = (newPage) => {
-    // if (newPage === page) {
-    //   setPage("");
-    //   return;
-    // }
-
     setPage(newPage);
   };
 
   return (
     <div>
+      {isModalOpen && (
+        <div className="fixed z-50 inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white rounded-lg overflow-hidden shadow-xl max-w-md w-full">
+            <div className="p-4 border-b">
+              <h3 className="text-lg font-semibold">Paste your link here</h3>
+            </div>
+            <div className="p-4">
+              {/* <p>This is a simple modal using Tailwind CSS in React.</p> */}
+              <div className="">
+                <input
+                  className="shadow appearance-none border border-red rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  // id="password"
+                  // type="password"
+                  placeholder="www.example.com"
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
+                  // onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="p-4 border-t flex justify-end">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="bg-black text-white px-4 py-2 rounded"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="p-8 bg-gray-100 rounded-lg">
         <div className="flex bg-white p-4 rounded-lg">
           <img className="w-12 h-12 mr-4" src={UserProfile} />
@@ -129,11 +161,18 @@ const PostPage = () => {
             className="bg-transparent outline-none shadow-none focus:outline-none focus:ring-0 mx-2 border-2 focus:border-b-black w-full"
             placeholder="Share something"
           /> */}
-          <textarea
-            className="bg-transparent appearance-none outline-none shadow-none focus:outline-none focus:ring-0 w-full h-32 resize-none p-0 m-0"
-            placeholder="Share something"
-            onChange={(e) => setText(e.target.value)}
-          />
+          <div className="w-full">
+            <input
+              className="bg-transparent appearance-none outline-none shadow-none focus:outline-none focus:ring-0 w-full h-fit resize-none p-0 m-0 text-xl font-bold"
+              placeholder="Post title"
+              onChange={(e) => setName(e.target.value)}
+            />
+            <textarea
+              className="bg-transparent appearance-none outline-none shadow-none focus:outline-none focus:ring-0 w-full h-32 resize-none p-0 mt-2"
+              placeholder="Share something"
+              onChange={(e) => setText(e.target.value)}
+            />
+          </div>
           <ToastContainer />
         </div>
         <div>
@@ -240,15 +279,18 @@ const PostPage = () => {
           </div>
         </div>
         <div className="flex justify-between mt-4">
-          <label className="flex justify-center items-center hover:cursor-pointer">
-            <input
+          <label
+            onClick={() => setIsModalOpen(true)}
+            className="flex justify-center items-center hover:cursor-pointer"
+          >
+            {/* <input
               type="file"
               accept="image/*"
               style={{ display: "none" }}
               onChange={handleFileUpload}
-            />
-            <box-icon type="solid" name="image-add"></box-icon>
-            <p className="ml-2 select-none">Images</p>
+            /> */}
+            <box-icon name="link"></box-icon>
+            <p className="ml-2 select-none">Link</p>
           </label>
           <button
             disabled={disabled}
