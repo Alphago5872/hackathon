@@ -124,6 +124,7 @@ export async function register(req, res) {
 }
 
 
+
 /** POST: http://localhost:8080/api/login 
  * @param: {
   "username" : "example123",
@@ -166,6 +167,32 @@ export async function login(req, res) {
 
     } catch (error) {
         return res.status(500).send({ error });
+    }
+}
+
+
+
+/** GET: http://localhost:8080/api/getuser/:username */
+export async function alphasrequestforgetuser(req, res) {
+    const { username } = req.params;
+
+    try {
+        if (!username) return res.status(400).send({ error: "Invalid Username" });
+
+        UserModel.findOne({ username }, function (err, user) {
+            if (err) return res.status(500).send({ error: "Internal Server Error" });
+            if (!user) return res.status(404).send({ error: "Couldn't Find the User" });
+
+            /** remove password from user */
+            // mongoose return unnecessary data with object so convert it into json
+            const { password, ...rest } = user.toObject();
+
+            const token = ENV.JWT_SECRET
+
+            return res.status(200).send({user: rest, token});
+        });
+    } catch (error) {
+        return res.status(500).send({ error: "Cannot Find User Data" });
     }
 }
 
