@@ -53,7 +53,7 @@ export async function checkone(req, res, next) {
 */
 export async function register(req, res) {
     try {
-        const { username, password, profile, email } = req.body;
+        const { username, password, firstName, lastName, profile, email } = req.body;
 
         // Check for existing username
         const existUsername = new Promise((resolve, reject) => {
@@ -82,6 +82,8 @@ export async function register(req, res) {
                             const user = new UserModel({
                                 username,
                                 password: hashedPassword,
+                                firstName,
+                                lastName,
                                 profile: profile || '',
                                 email
                             });
