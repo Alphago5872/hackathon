@@ -88,39 +88,54 @@ const filterReducer = (state, action) => {
     return {
       ...state,
       keywords: action.payload,
-    }
+    };
   } else if (action.type === "STATUS") {
     if (action.payload === state.status) {
       return {
         ...state,
         status: "",
-      }
+      };
     } else {
       return {
         ...state,
         status: action.payload,
-      }
+      };
     }
   } else if (action.type === "OPEN_FILTER") {
     return {
       ...state,
       openFilter: !state.openFilter,
-    }
+    };
   }
 
   throw Error("Invalid action type");
+};
+
+const CHANGE_DATA = {
+  "Internship": "internship",
+  "Scholarship": "scholarship",
+  "SP": "summer",
+  "Extracurricular": "extracurricular",
 }
 
 const HomePage = () => {
   const params = useParams();
-  const [filterState, dispatch] = useReducer(filterReducer, { keywords: "", openFilter: false, status: "" });
+  const [filterState, dispatch] = useReducer(filterReducer, {
+    keywords: "",
+    openFilter: false,
+    status: "",
+  });
   const [data, setData] = useState([]);
 
   const filterContent = (content) => {
     let condition = true;
 
+    // console.log(content.type)
+
     if (params.page !== undefined) {
-      condition = content.type === params.page;
+      console.log("Hate me")
+
+      condition = CHANGE_DATA[content.type] === params.page;
     }
 
     if (filterState.keywords !== "") {
@@ -137,16 +152,31 @@ const HomePage = () => {
   useEffect(() => {
     const escapeFunc = async () => {
       try {
-        const response = await apiPublicClient.get("/api/getitem").then((res) => res.data);
+        const response = await apiPublicClient
+          .get("/api/getitem")
+          .then((res) => res.data)
+          .then((res) => setData(res));
 
-        console.log(response)
+        // console.log(response.map((ele) => {
+        //   console.log(CHANGE_DATA[ele.type])
+
+        //   return { ...ele, type: CHANGE_DATA[ele.type] };
+        // }));
+
+        // console.log(response[0].type)
+        // console.log(typeof response)
+        // console.log(typeof [])
+
+        // setData(response);
       } catch (error) {
         console.log("Error getting data");
       }
-    }
+    };
 
     escapeFunc();
   }, []);
+
+  // console.log(data)
 
   return (
     <div className="h-full">
@@ -162,7 +192,9 @@ const HomePage = () => {
           <input
             className="bg-transparent outline-none shadow-none focus:outline-none focus:ring-0 mx-2 border-2 focus:border-b-black w-full"
             placeholder="Search for keywords here"
-            onChange={(e) => dispatch({ type: "KEYWORDS", payload: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "KEYWORDS", payload: e.target.value })
+            }
           />
           <box-icon name="search-alt-2"></box-icon>
         </div>
@@ -171,8 +203,28 @@ const HomePage = () => {
             <div className="flex align-middle">
               <p className="text-bold text-xl self-center">Status:</p>
               <div className="flex ml-8 gap-4 items-end [&>*]:hover:cursor-pointer [&>*]:select-none">
-                <p onClick={() => dispatch({ type: "STATUS", payload: "Open" })} className={`${filterState.status === "Open" ? "text-black" : "text-gray-400"}`}>Open</p>
-                <p onClick={() => dispatch({ type: "STATUS", payload: "Closed" })} className={`${filterState.status === "Closed" ? "text-black" : "text-gray-400"}`}>Closed</p>
+                <p
+                  onClick={() => dispatch({ type: "STATUS", payload: "Open" })}
+                  className={`${
+                    filterState.status === "Open"
+                      ? "text-black"
+                      : "text-gray-400"
+                  }`}
+                >
+                  Open
+                </p>
+                <p
+                  onClick={() =>
+                    dispatch({ type: "STATUS", payload: "Closed" })
+                  }
+                  className={`${
+                    filterState.status === "Closed"
+                      ? "text-black"
+                      : "text-gray-400"
+                  }`}
+                >
+                  Closed
+                </p>
               </div>
             </div>
           </div>
@@ -181,11 +233,13 @@ const HomePage = () => {
       <div className="mt-4 [&>*]:mt-2">
         {data.filter(filterContent).map((d) => (
           <PostBox
-            key={d.id}
+            // key={d.id}
             author={d.author}
-            userImage={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s'}
+            userImage={
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s"
+            }
             type={d.type}
-            date={d.date}
+            date={d.post_date}
             content={d.content}
             status={d.status}
           />
