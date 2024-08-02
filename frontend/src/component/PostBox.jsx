@@ -1,6 +1,8 @@
 const PostBox = (props) => {
   let color = "";
 
+  console.log(props.type)
+
   if (props.type === "scholarship") {
     color = "bg-bright-yellow";
   } else if (props.type === "internship") {

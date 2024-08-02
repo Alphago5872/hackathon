@@ -130,7 +130,11 @@ const HomePage = () => {
   const filterContent = (content) => {
     let condition = true;
 
-    // console.log(content.type)
+    console.log(content.type)
+    console.log(content.author)
+    console.log(content.post_date)
+    console.log(content.description)
+    console.log(content.status)
 
     if (params.page !== undefined) {
       console.log("Hate me")
@@ -154,8 +158,7 @@ const HomePage = () => {
       try {
         const response = await apiPublicClient
           .get("/api/getitem")
-          .then((res) => res.data)
-          .then((res) => setData(res));
+          .then((res) => res.data);
 
         // console.log(response.map((ele) => {
         //   console.log(CHANGE_DATA[ele.type])
@@ -167,7 +170,7 @@ const HomePage = () => {
         // console.log(typeof response)
         // console.log(typeof [])
 
-        // setData(response);
+        setData(response);
       } catch (error) {
         console.log("Error getting data");
       }
@@ -176,7 +179,8 @@ const HomePage = () => {
     escapeFunc();
   }, []);
 
-  // console.log(data)
+  console.log(data)
+  console.log(data.length)
 
   return (
     <div className="h-full">
@@ -238,9 +242,9 @@ const HomePage = () => {
             userImage={
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98d2f2Vxy42LD1qE5HC4-DwbDuyE5mboZtw&s"
             }
-            type={d.type}
+            type={CHANGE_DATA[d.type]}
             date={d.post_date}
-            content={d.content}
+            content={d.description}
             status={d.status}
           />
         ))}
