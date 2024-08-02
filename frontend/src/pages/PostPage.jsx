@@ -1,12 +1,17 @@
 import { useState } from "react";
 import UserProfile from "../assets/DUMMY User profile.png";
 import { toast, ToastContainer } from "react-toastify";
+import { apiPublicClient } from "../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 const PostPage = () => {
   const [image, setImaga] = useState("");
   const [text, setText] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [page, setPage] = useState("");
+  const [status, setStatus] = useState("");
+
+  const nav = useNavigate();
 
   function handleFileUpload(event) {
     setDisabled(true);
@@ -47,7 +52,7 @@ const PostPage = () => {
 
     setDisabled(true);
 
-    if (!text) {
+    if (!text || page === "") {
       toast.error("Please enter some message", {
         position: "top-center",
         autoClose: 1000,
@@ -60,48 +65,49 @@ const PostPage = () => {
       return;
     }
 
-    // try {
-    //   // const response = await axios.post("/api/login", {
-    //   //   username,
-    //   //   password,
-    //   // }).then(res => res.data);
+    try {
+      const userName = localStorage.getItem("username");
 
-    //   // localStorage.setItem("jwt", response.token);
-    //   // localStorage.setItem("username", username);
-    //   // console.log(response);
+      const response = await apiPublicClient
+        .post("/api/createitem", {
+          type: page,
+          description: text,
+          image: image,
+          author: userName,
+          status: "closed",
+        })
+        .then((res) => res.data);
 
-    //   toast.success("Posted successfully", {
-    //     position: "top-center",
-    //     autoClose: 1000,
-    //     pauseOnHover: false,
-    //     onClose: () => {
-    //       // nav("/")
-    //       // setDisabled(false)
-    //     },
-    //   });
-    // } catch (error) {
-    //   // console.log("Error signing in");
-
-    //   toast.error("Error posting", {
-    //     position: "top-center",
-    //     autoClose: 1000,
-    //     pauseOnHover: false,
-    //     onClose: () => {
-    //       // nav("/")
-    //       // setDisabled(false)
-    //     },
-    //   });
-    // }
+      toast.success("Posted successfully", {
+        position: "top-center",
+        autoClose: 1000,
+        pauseOnHover: false,
+        onClose: () => {
+          nav("/");
+          setDisabled(false);
+        },
+      });
+    } catch (error) {
+      toast.error("Error posting", {
+        position: "top-center",
+        autoClose: 1000,
+        pauseOnHover: false,
+        onClose: () => {
+          // nav("/")
+          setDisabled(false);
+        },
+      });
+    }
   };
 
   const stateChangeHandler = (newPage) => {
-    if (newPage === page) {
-      setPage("");
-      return;
-    }
+    // if (newPage === page) {
+    //   setPage("");
+    //   return;
+    // }
 
     setPage(newPage);
-  }
+  };
 
   return (
     <div>
@@ -199,6 +205,27 @@ const PostPage = () => {
                 Extracurricular
               </h2>
             </div>
+          </div>
+        </div>
+        <div className="mt-4">
+          <p className="font-bold text-xl">Status</p>
+          <div className="flex gap-4 items-end [&>*]:hover:cursor-pointer [&>*]:select-none mt-2">
+            <p
+              onClick={() => setStatus("open")}
+              className={`${
+                status === "open" ? "text-black" : "text-gray-400"
+              }`}
+            >
+              Open
+            </p>
+            <p
+              onClick={() => setStatus("closed")}
+              className={`${
+                status === "closed" ? "text-black" : "text-gray-400"
+              }`}
+            >
+              Closed
+            </p>
           </div>
         </div>
         <div className="flex justify-between mt-4">
