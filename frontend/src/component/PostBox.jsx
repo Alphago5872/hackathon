@@ -44,7 +44,7 @@ const PostBox = (props) => {
       <div className="mt-4">
         <p>{props.content}</p>
       </div>
-      <img className="w-max-2/3 mt-4 max-h-80" src={props.imageContent} />
+      {/* <img className="w-max-2/3 mt-4 max-h-80" src={props.imageContent} /> */}
     </div>
   );
 };
