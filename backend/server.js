@@ -7,7 +7,7 @@ import router from './router/route.js';
 const app = express();
 
 /** middlewares */
-app.use(express.json());
+app.use(express.json({ limit: '10mb', extended: true }));
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
