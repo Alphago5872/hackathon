@@ -30,8 +30,12 @@ const PostBox = (props) => {
         <h1>{props.status}</h1>
       </div>
       <div className="mt-4">
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" className="font-semibold text-2xl">TITTIES, I MEAN TITLE</a>
+      </div>
+      <div className="mt-4">
         <p>{props.content}</p>
       </div>
+      <img className="w-max-2/3 mt-4 max-h-80" src={props.imageContent} />
     </div>
   );
 };
