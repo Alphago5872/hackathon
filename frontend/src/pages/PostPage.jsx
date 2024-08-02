@@ -85,6 +85,7 @@ const PostPage = () => {
           author: userName,
           status: status,
           post_date: getCurrentDate(),
+          name: page,
         })
         .then((res) => res.data);
 
@@ -140,18 +141,18 @@ const PostPage = () => {
           <div className="flex mt-2 [&>*]:hover:cursor-pointer justify-between">
             <div
               className={`flex w-64 gap-2 items-center rounded-lg`}
-              onClick={() => stateChangeHandler("scholarship")}
+              onClick={() => stateChangeHandler("Scholarship")}
             >
               {/* <img className='w-12' src={page === 'scholarship' ? Scholarship_white_icon : Scholarship_black_icon} alt='scholarship' /> */}
               <box-icon
-                color={page === "scholarship" ? "#FFD700" : "black"}
+                color={page === "Scholarship" ? "#FFD700" : "black"}
                 size="1.5rem"
                 type="solid"
                 name="graduation"
               ></box-icon>
               <h2
                 className={`text-xl select-none ${
-                  page === "scholarship" && "text-bright-yellow"
+                  page === "Scholarship" && "text-bright-yellow"
                 }`}
               >
                 Scholarship
@@ -159,18 +160,18 @@ const PostPage = () => {
             </div>
             <div
               className={`flex w-64 gap-2 items-center rounded-lg`}
-              onClick={() => stateChangeHandler("internship")}
+              onClick={() => stateChangeHandler("Internship")}
             >
               {/* <img className='w-12' src={page === 'internship' ? Internship_white_icon : Internship_black_icon} alt='internship' /> */}
               <box-icon
-                color={page === "internship" ? "#87CEEB" : "black"}
+                color={page === "Internship" ? "#87CEEB" : "black"}
                 size="1.5rem"
                 type="solid"
                 name="briefcase"
               ></box-icon>
               <h2
                 className={`text-xl select-none ${
-                  page === "internship" && "text-sky-blue"
+                  page === "Internship" && "text-sky-blue"
                 }`}
               >
                 Internship
@@ -180,17 +181,17 @@ const PostPage = () => {
           <div className="flex mt-2 [&>*]:hover:cursor-pointer justify-between">
             <div
               className={`flex w-64 gap-2 items-center rounded-lg`}
-              onClick={() => stateChangeHandler("summer")}
+              onClick={() => stateChangeHandler("SP")}
             >
               {/* <img className='w-12' src={page === 'summer' ? SummerProgram_white_icon : SummerProgram_black_icon} alt='summer' /> */}
               <box-icon
-                color={page === "summer" ? "#FF6F61" : "black"}
+                color={page === "SP" ? "#FF6F61" : "black"}
                 size="1.5rem"
                 name="swim"
               ></box-icon>
               <h2
                 className={`text-xl select-none ${
-                  page === "summer" && "text-coral"
+                  page === "SP" && "text-coral"
                 }`}
               >
                 Summer Program
@@ -198,18 +199,18 @@ const PostPage = () => {
             </div>
             <div
               className={`flex w-64 gap-2 items-center rounded-lg`}
-              onClick={() => stateChangeHandler("extracurricular")}
+              onClick={() => stateChangeHandler("Extracurricullar")}
             >
               {/* <img className='w-12' src={page === 'extracurricular' ? Extracurricular_white_icon : Extracurricular_black_icon} alt='extracurricular' /> */}
               <box-icon
-                color={page === "extracurricular" ? "#32CD32" : "black"}
+                color={page === "Extracurricullar" ? "#32CD32" : "black"}
                 size="1.5rem"
                 type="solid"
                 name="piano"
               ></box-icon>
               <h2
                 className={`text-xl select-none ${
-                  page === "extracurricular" && "text-lime-green"
+                  page === "Extracurricullar" && "text-lime-green"
                 }`}
               >
                 Extracurricular
