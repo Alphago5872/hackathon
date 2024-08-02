@@ -143,7 +143,7 @@ const HomePage = () => {
     }
 
     if (filterState.keywords !== "") {
-      condition = content.content.includes(filterState.keywords);
+      condition = content.description.includes(filterState.keywords);
     }
 
     if (filterState.status !== "") {
@@ -246,6 +246,7 @@ const HomePage = () => {
             date={d.post_date}
             content={d.description}
             status={d.status}
+            imageContent={d.image}
           />
         ))}
       </div>
