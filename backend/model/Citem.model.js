@@ -28,9 +28,6 @@ export const ItemSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide a name for the item"]
     },
-    industry : {
-        type: [String],
-    },
     description : {
         type: String,
         required : [true, "Please provide a description for the item"]
@@ -67,18 +64,7 @@ export const ItemSchema = new mongoose.Schema({
     },
     organization : {
         type: String,
-    },
-    post_date : {
-        type: String,
-        required : [true, "Please provide a postdate for the item"],
-        validate: {
-            validator: isValidDate,
-            message: 'Please provide a valid date in the format dd-mm-yyyy'
-        }
-    },
-    author : {
-        type : String,
-        required : [true, "Please provide an author for the item"],
+        required : [true, "Please provide the organization hosting the item"]
     }
 });
 

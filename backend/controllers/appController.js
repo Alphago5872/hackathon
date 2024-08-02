@@ -217,10 +217,10 @@ export async function alphasrequestforgetuser(req, res) {
  */
 export async function createItem(req, res) {
     try {
-        const { type, name, industry, description, image, link, status, opening, deadline, organization } = req.body;
+        const { type, name, industry, description, image, link, status, opening, deadline, organization, post_date, author } = req.body;
 
         // Validate required fields
-        if (!type || !name || !industry || !description || !link || !status || !opening || !deadline || !organization) {
+        if (!type || !name || !industry || !description || !link || !status || !opening || !deadline || !organization || !post_date || !author) {
             return res.status(400).send({ error: "All fields are required" });
         }
 
@@ -235,7 +235,9 @@ export async function createItem(req, res) {
             status,
             opening,
             deadline,
-            organization
+            organization,
+            post_date,
+            author
         });
 
         // Save the item to the database
@@ -261,7 +263,7 @@ export async function createItem(req, res) {
 
 export async function getItem(req, res) {
     try {
-        const { type, name, industry, status, organization } = req.query;
+        const { type, name, industry, status, organization, post_date, author} = req.query;
 
         // Build the query object
         let query = {};
@@ -270,6 +272,8 @@ export async function getItem(req, res) {
         if (industry) query.industry = industry;
         if (status) query.status = status;
         if (organization) query.organization = organization;
+        if (post_date) query.post_date = post_date;
+        if (author) query.author = author;
 
         // Retrieve items from the database
         let items = await ItemModel.find(query);
