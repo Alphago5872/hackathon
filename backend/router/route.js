@@ -20,6 +20,7 @@ router.route('/generateOTP').get(controller.verifyUser, localVariables, controll
 router.route('/verifyOTP').get(controller.verifyUser, controller.verifyOTP); // verify generated OTP
 router.route('/createResetSession').get(controller.createResetSession); // reset all the variables
 router.route('/getitem').get(controller.getItem); // get item information
+router.route('/getuser/:username').get(controller.alphasrequestforgetuser); // get user information
 router.route('/:username').get(controller.getUser); // get user information
 
 /** PUT Methods */
