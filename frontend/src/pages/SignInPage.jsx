@@ -30,16 +30,18 @@ const SignInPage = () => {
       }).then(res => res.data);
 
       localStorage.setItem("jwt", response.token);
+      localStorage.setItem("username", username);
       // console.log(response);
 
       toast.success("Signed up successfully", {
         position: "top-center",
         autoClose: 1000,
         pauseOnHover: false,
-        onClose: () => nav("/")
+        onClose: () => {
+          nav("/")
+          setDisabled(false)
+        }
       });
-
-      setDisabled(false)
     } catch (error) {
       // console.log("Error signing in");
 
