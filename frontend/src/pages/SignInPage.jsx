@@ -56,10 +56,10 @@ const SignInPage = () => {
 
   return (
     <div className="grid w-screen h-screen grid-cols-2">
-      <div>
+      <div className="w-full overflow-y-hidden">
         <img
-          className="w-full h-full"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4XanF_Pv6FwkOjOgX8eI8c0fSkzYj8vFFg&s"
+          className="w-full object-cover"
+          src="https://img.freepik.com/free-photo/front-view-stacked-books-graduation-cap-diploma-education-day_23-2149241011.jpg"
         />
       </div>
       <div className="my-auto mx-16 h-fit max-w-3xl p-8">

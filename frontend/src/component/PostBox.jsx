@@ -32,14 +32,14 @@ const PostBox = (props) => {
         <h1>{props.status}</h1>
       </div>
       <div className="mt-4">
-        <a
+        {props.link ? <a
           target="_blank"
           rel="noopener noreferrer"
           href={props.link}
           className="font-semibold text-2xl"
         >
           {props.name}
-        </a>
+        </a> : <h1 className="font-semibold text-2xl">{props.name}</h1>}
       </div>
       <div className="mt-4">
         <p>{props.content}</p>

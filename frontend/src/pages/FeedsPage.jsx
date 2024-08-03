@@ -137,17 +137,15 @@ const HomePage = () => {
     console.log(content.status)
 
     if (params.page !== undefined) {
-      console.log("Hate me")
-
       condition = CHANGE_DATA[content.type] === params.page;
     }
 
     if (filterState.keywords !== "") {
-      condition = content.description.includes(filterState.keywords);
+      condition = condition && (content.description.toLowerCase().includes(filterState.keywords.toLowerCase()) || content.name.toLowerCase().includes(filterState.keywords.toLowerCase()));
     }
 
     if (filterState.status !== "") {
-      condition = content.status === filterState.status;
+      condition = condition && content.status === filterState.status.toLowerCase();
     }
 
     return condition;

@@ -196,7 +196,7 @@ const SideBar = () => {
       </div>
       <div className="mt-auto mb-14 mx-12 flex">
         {/* <p>Nice!</p> */}
-        <Link onClick={logoutHandler} className="p-4 bg-red-500 w-full rounded-2xl text-white text-center font-bold text-xl" to="/">Log out</Link>
+        <Link onClick={logoutHandler} className="p-4 bg-black w-full rounded-2xl text-white text-center font-bold text-xl" to="/">Log out</Link>
         {/* <button className="mt-auto mx-auto w-full py-4">Log out</button> */}
       </div>
     </div>
